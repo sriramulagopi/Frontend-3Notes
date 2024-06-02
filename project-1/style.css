@@ -1,0 +1,18 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    height: 400px;
+    border: 2px solid red;
+}
+.container>div{
+    display: flex;
+    justify-content: space-between;
+    gap: 2px;
+    padding: 27px 10px;
+}
+.container>div>div{
+    border: 1px solid black;
+    padding: 40px;
+    width: fit-content;
+}

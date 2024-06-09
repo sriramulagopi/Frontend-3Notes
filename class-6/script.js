@@ -36,8 +36,13 @@
 // console.log(user1);
 
 
+// console.log(Function.prototype);
+// console.log(Function.__proto__);
+// console.log(Function.prototype===Function.__proto__)
+
 // console.log(Function.prototype.__proto__);
 // console.log(Function.__proto__.__proto__);
+
 // function User(){
 
 // };

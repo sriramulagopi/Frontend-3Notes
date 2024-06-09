@@ -23,6 +23,14 @@
 // intro();
 // intro.call(obj);
 
+
+// let arrow = ()=>{
+    //     console.log(this);
+    //     console.log(this.Name);
+    // }
+    // arrow.call(obj);
+    
+
 // let obj1 = {
 //     Name:"Asif",
 //     Address:"Khammam",

@@ -6,6 +6,10 @@
     <title>Document</title>
     <link rel="stylesheet" href="./style.css" />
     <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
       integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
@@ -14,24 +18,59 @@
     />
   </head>
   <body>
-    <section class="sec1">
-      <div class="sideBar">
+    <head>
+      <section class="sec1">
         <div class="div1">
-          <span><i class="fa-solid fa-bars"></i></span>
-          <span><i class="fa-brands fa-youtube"></i>YouTube</span>
+          <span><i class="fa-solid fa-bars"></i><span><i class="fa-brands fa-youtube"></i>YouTube</span>
+          </span>
         </div>
-        <div></div>
-        <div></div>
-      </div>
-      <div class="playList">
-        <div class="search">
+        <div class="div2">
           <form action="">
-            <input type="text" placeholder="Search" name="search" />
-            <button><i class="fa-solid fa-magnifying-glass"></i></button>
+            <input type="text" placeholder="search" name="search"/>
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
           </form>
+          <div><i class="fa-solid fa-microphone"></i></div>
         </div>
-      </div>
-    </section>
-    <script src="./script.js"></script>
+        <div class="div3">
+          <span class="material-icons">video_call</span>
+          <span class="material-icons">notifications</span>
+          <span class="material-icons">account_circle</span>
+        </div>
+      </section>
+    </head>
+    <form action="" class="form2">
+      <section class="sec2">
+        <div class="sideBar">
+          <div class="a1">
+            <div><span class="material-icons">home</span> <span>Home</span></div>
+            <div><span class="material-icons">video_library</span><span>Shorts</span></div>
+            <div><span class="material-icons">subscriptions</span><span>Subscriptions</span></div>
+          </div>
+          <div class="a1">
+            <div><span class="material-icons">group</span> <span>Your channel</span></div>
+            <div><span class="material-icons">history</span><span>History</span></div>
+            <div><span class="material-icons">playlist_play</span><span>Playlists</span></div>
+            <div><span class="material-icons">smart_display</span><span>Your videos</span></div>
+            <div><span class="material-icons">schedule</span><span>Watch later</span></div>
+            <div><span class="material-icons">thumb_up</span><span>Liked videos</span></div>
+          </div>
+          <div class="a1">
+            <div><span class="material-icons">trending_up</span> <span>Trending</span></div>
+            <div><span class="material-icons">shopping_bag</span><span>Shopping</span></div>
+            <div><span class="material-icons">music_note</span><span>Music</span></div>
+            <div><span class="material-icons">movie</span><span>Films</span></div>
+            <div><span class="material-icons">stream</span><span>Live</span></div>
+            <div><span class="material-icons">sports_esports</span><span>Sports</span></div>
+            <div><span class="material-icons">lightbulb</span><span>Courses</span></div>
+            <div><span class="material-icons">podcasts</span><span>Podcasts</span></div>
+          </div>
+        </div>
+        <div class="mainBar">
+          <div class="video">
+          </div>
+        </div>
+      </section>
+    </form>
+    <script src="./cript.js"></script>
   </body>
 </html>

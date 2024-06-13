@@ -1,59 +1,229 @@
-const playList = document.querySelector(".playList");
+const videos = document.querySelector(".video");
 const form = document.querySelector("form");
+const mainBar = document.querySelector(".mainBar");
 const baseUrl = "https://www.googleapis.com/youtube/v3";
-const API_KEY = "AIzaSyBl60n6hgJqyAN5PjAiqWyc23mJ85zOrA8";
-async function fectchVideos(searchQuery,maxResults){
-    try{
-        const response = await fetch(baseUrl+"/search"+`?key=${API_KEY}`+'&part=snippet'+`&q=${searchQuery}`)
-        let data = await response.json();
-        renderData(data.items)
-    }
-    catch(e){
-        console.log(e);
-    }
+const API_KEY = "AIzaSyBWt39vLY2LmI8dVHYwzo5TRar0FAjY--0";
+async function fectchVideos() {
+  try {
+    const response = await fetch(
+      baseUrl +
+        "/search" +
+        `?key=${API_KEY}` +
+        "&part=snippet" +
+        `&q=home` +
+        `&maxResults=36`
+    );
+    let data = await response.json();
+    console.log(data);
+    renderData(data.items);
+  } catch (e) {
+    console.log(e);
+  }
 }
-form.addEventListener("submit",(e)=>{
-    e.preventDefault();
-    fectchVideos(form.search.value);
-})
-function renderData(data){
-    console.log(data)
-    for(let i=0;i<data.length;i++){
-        let timer1 = new Date(data[i].snippet.publishedAt);
-        let timer2 = new Date();
-        let result = ((timer2-timer1)/1000);
-        let time;
-        if(result<60){
-            time= `${Math.round(result)} seconds ago`;
-        }
-        else if(result>60 && result<(60*60)){
-            time= `${Math.round(result/60)} minutes ago`;
-        }
-        else if(Math.round((result/(60*60))/24)<1){
-            time= `${Math.floor(result/(60*60))} hours ago`;
-        }
-        else if(Math.round((result/(60*60))/24)>=1 && Math.round((result/(60*60))/24)<365){
-            time= `${Math.floor((result/(60*60))/24)} days ago`;
-        }
-        else{
-            time= `${Math.floor(((result/(60*60))/24)/365)} years ago`;
-        }
-        let div = document.createElement("div");
-        div.className="video";
-        div.innerHTML=`
-            <img
-              src="${data[i].snippet.thumbnails.medium.url}"
-              alt=""
-            />
-          <div class="aboutVideo">
-            <div class="title">${data[i].snippet.title}</div>
-            <div class="time">${time}</div>
-            <div class="channelName">
-                <img src="" alt="">
-                <span>${data[i].snippet.channelTitle}</span>
-            </div>
-            <div class="discription">${data[i].snippet.description}</div>
-          </div>`
-        playList.appendChild(div);
-    }
+form.addEventListener("submit", wantedVideos);
+async function wantedVideos(e) {
+  e.preventDefault();
+  videos.style.display = "none";
+  try {
+    const response = await fetch(
+      baseUrl +
+        "/search" +
+        `?key=${API_KEY}` +
+        "&part=snippet" +
+        `&q=${form.search.value}` +
+        `&maxResults=20`
+    );
+    console.log(form.search.value)
+    let data = await response.json();
+    renderData1(data.items);
+  } catch (e) {
+    console.log(e);
+  }
 }
+fectchVideos();
+
+async function renderData1(data) {
+  if(mainBar.children[1]){
+    mainBar.children[1].remove();
+  }
+  const videos1 = document.createElement("div");
+  videos1.className="videoContainer";
+  mainBar.appendChild(videos1);
+  for (let i = 0; i < data.length; i++) {
+    let data3 = await fetchChannel(data[i].snippet.channelId);
+    let data2 = await fetchVideostas(data[i].id.videoId, "statistics");
+    function viewsLikes(count) {
+      let views;
+      if (count < 1000) {
+        views = count;
+      } else if (count > 1000 && count < 1000000) {
+        views = Math.floor(count / 1000) + "K";
+      } else {
+        views = Math.floor(count / 1000000) + "M";
+      }
+      return views;
+    }
+    function time(t) {
+      let timer2 = new Date();
+      let timer1 = new Date(t);
+      let result = Math.floor((timer2 - timer1) / 1000);
+      if (result < 60) {
+        result = `Just Now`;
+      } else if (result > 60 && result < 60 * 60) {
+        result = `${Math.floor(result / 60)} mintues before`;
+      } else if (result > 60 * 60 && result < 60 * 60 * 24) {
+        result = `${Math.floor(result / (60 * 60))} hours ago`;
+      } else if (result > 60 * 60 * 24 && result < 60 * 60 * 24 * 30) {
+        result = `${Math.floor(result / (60 * 60 * 24))} days ago`;
+      } else if (
+        result > 60 * 60 * 24 * 30 &&
+        result < 60 * 60 * 24 * 30 * 12
+      ) {
+        result = `${Math.floor(result / (60 * 60 * 24 * 30))} months ago`;
+      } else {
+        result = `${Math.floor(result / (60 * 60 * 24 * 30 * 12))} year ago`;
+      }
+      return result;
+    }
+    let div = document.createElement("div");
+    div.className = "box1";
+    div.innerHTML = `
+      <img src="${data[i].snippet.thumbnails.medium.url}" alt="">
+      <div class="details1">
+        <div class="font">${data[i].snippet.title}</div>
+        <div class="timeViews1">
+          <span>${viewsLikes(data2[0].statistics.viewCount)} views </span>-
+          <span>${time(data[i].snippet.publishedAt)}</span>
+        </div>
+        <div class=channel1><img src="${data3[0].snippet.thumbnails.medium.url}" alt="">${data[i].snippet.channelTitle}</div>
+        <div class="discription">${data[i].snippet.description}</div>
+      </div>`;
+    videos1.appendChild(div);
+  }
+}
+async function renderData(data) {
+  for (let i = 0; i < data.length; i++) {
+    let data3 = await fetchChannel(data[i].snippet.channelId);
+    let data2 = await fetchVideostas(data[i].id.videoId, "statistics");
+    function viewsLikes(count) {
+      let views;
+      if (count < 1000) {
+        views = count;
+      } else if (count > 1000 && count < 1000000) {
+        views = Math.floor(count / 1000) + "K";
+      } else {
+        views = Math.floor(count / 1000000) + "M";
+      }
+      return views;
+    }
+    function time(t) {
+      let timer2 = new Date();
+      let timer1 = new Date(t);
+      let result = Math.floor((timer2 - timer1) / 1000);
+      if (result < 60) {
+        result = `Just Now`;
+      } else if (result > 60 && result < 60 * 60) {
+        result = `${Math.floor(result / 60)} mintues before`;
+      } else if (result > 60 * 60 && result < 60 * 60 * 24) {
+        result = `${Math.floor(result / (60 * 60))} hours ago`;
+      } else if (result > 60 * 60 * 24 && result < 60 * 60 * 24 * 30) {
+        result = `${Math.floor(result / (60 * 60 * 24))} days ago`;
+      } else if (
+        result > 60 * 60 * 24 * 30 &&
+        result < 60 * 60 * 24 * 30 * 12
+      ) {
+        result = `${Math.floor(result / (60 * 60 * 24 * 30))} months ago`;
+      } else {
+        result = `${Math.floor(result / (60 * 60 * 24 * 30 * 12))} year ago`;
+      }
+      return result;
+    }
+    let div = document.createElement("div");
+    div.className = "box";
+    div.innerHTML = `<img src="${data[i].snippet.thumbnails.medium.url}" alt="">
+            <div class="details">
+            <h4>${data[i].snippet.title}</h4>              
+              <div class=channel1><img src="${data3[0].snippet.thumbnails.medium.url}" alt="">${data[i].snippet.channelTitle}</div>
+              <div class="timeViews1">
+                <span>${viewsLikes(data2[0].statistics.viewCount)} views</span>-
+                <span>${time(data[i].snippet.publishedAt)}</span>
+              </div>`;
+
+    videos.appendChild(div);
+  }
+}
+
+async function fetchVideostas(videoId, typeofDetails) {
+  try {
+    const response = await fetch(
+      baseUrl +
+        "/videos" +
+        `?key=${API_KEY}` +
+        `&id=${videoId}` +
+        `&part=${typeofDetails}`
+    );
+    const data = await response.json();
+    return data.items;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+// async function fetchVideostas1(videoId, typeofDetails) {
+//   try {
+//     const response = await fetch(
+//       baseUrl +
+//         "/videos" +
+//         `?key=${API_KEY}` +
+//         `&id=${videoId}` +
+//         `&part=${typeofDetails}`
+//     );
+//     const data = await response.json();
+//     console.log(data);
+//   } catch (e) {
+//     console.log(e);
+//   }
+// }
+// fetchVideostas1("MeXH3zkUndM","contentDetails")
+
+async function fetchChannel(channelId) {
+  try {
+    const response = await fetch(
+      baseUrl +
+        "/channels" +
+        `?key=${API_KEY}` +
+        "&part=snippet" +
+        `&id=${channelId}`
+    );
+    const data = await response.json();
+    return data.items;
+  } catch (e) {
+    console.log(e);
+  }
+}
+// fetchChannel("UCK8sQmJBp8GCxrOtXWBpyEA")
+
+// async function fectchVideoState(videoID,typeofDetails){
+//     try{
+//         const response = await fetch(baseUrl+"/videos"+`?key=${API_KEY}`+`&id=${videoID}`+`&part=${typeofDetails}`);
+//         let data = await response.json();
+//         console.log(data);
+//     }
+//     catch(e){
+//         console.log(e);
+//     }
+
+// }
+// fectchVideoState("uuXKuKZPPhg","statistics");
+
+// async function comments(videoId){
+//     try{
+//         const response = await fetch(baseUrl+"/commentThreads"+`?key=${API_KEY}`+`&videoId=${videoId}`+"&maxresults=25&part=snippet");
+//         const data = await response.json();
+//         console.log(data);
+//     }
+//     catch(e){
+//         console.log(e);
+//     }
+// }
+// comments("y1-w1kUGuz8");

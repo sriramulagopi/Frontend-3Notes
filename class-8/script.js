@@ -166,8 +166,6 @@
 // })
 
 
-
-
 // function intro2(name,callback){
 //     setTimeout(()=>{
 //         callback("My name is "+name);

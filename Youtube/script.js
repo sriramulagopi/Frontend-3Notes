@@ -1,8 +1,10 @@
 const videos = document.querySelector(".video");
 const form = document.querySelector("form");
+const form2 = document.querySelector(".form2");
 const mainBar = document.querySelector(".mainBar");
+const sec2 = document.querySelector(".sec2");
 const baseUrl = "https://www.googleapis.com/youtube/v3";
-const API_KEY = "AIzaSyBWt39vLY2LmI8dVHYwzo5TRar0FAjY--0";
+const API_KEY = "AIzaSyBqB77kHOwD6T6MnvD1bhQvOQpGlfBq18k";
 async function fectchVideos() {
   try {
     const response = await fetch(
@@ -10,11 +12,9 @@ async function fectchVideos() {
         "/search" +
         `?key=${API_KEY}` +
         "&part=snippet" +
-        `&q=home` +
-        `&maxResults=36`
+        `&maxResults=45`
     );
     let data = await response.json();
-    console.log(data);
     renderData(data.items);
   } catch (e) {
     console.log(e);
@@ -98,6 +98,25 @@ async function renderData1(data) {
         <div class=channel1><img src="${data3[0].snippet.thumbnails.medium.url}" alt="">${data[i].snippet.channelTitle}</div>
         <div class="discription">${data[i].snippet.description}</div>
       </div>`;
+      div.addEventListener("click",()=>{
+        sec2.style.display="none";
+        let div = document.createElement("div");
+        div.id="videoPlayer";
+        form2.appendChild(div);
+        let videoId=data[i].id.videoId;
+        if(YT){
+            new YT.Player("videoPlayer",{
+                height:"500",
+                width:"1000",
+                videoId,
+                events:{
+                    onReady:function(e){
+                        e.target.playVideo();
+                    }
+                }
+            })
+        }
+      })
     videos1.appendChild(div);
   }
 }
@@ -148,7 +167,25 @@ async function renderData(data) {
                 <span>${viewsLikes(data2[0].statistics.viewCount)} views</span>-
                 <span>${time(data[i].snippet.publishedAt)}</span>
               </div>`;
-
+      div.addEventListener("click",()=>{
+        sec2.style.display="none";
+        let div = document.createElement("div");
+        div.id="videoPlayer";
+        form2.appendChild(div);
+        let videoId=data[i].id.videoId;
+        if(YT){
+            new YT.Player("videoPlayer",{
+                height:"500",
+                width:"1000",
+                videoId,
+                events:{
+                    onReady:function(e){
+                        e.target.playVideo();
+                    }
+                }
+            })
+        }
+      })
     videos.appendChild(div);
   }
 }

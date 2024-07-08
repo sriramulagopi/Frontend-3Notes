@@ -85,7 +85,6 @@
 // });
 // console.log(p5);
 
-
 // let p6 = new Promise((resolve,reject)=>{
 //     let condition = false;
 //     if (condition){
@@ -102,3 +101,4 @@
 // p6.catch((data)=>{
 //     console.log(data);
 // })
+
